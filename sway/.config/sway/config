@@ -1,0 +1,58 @@
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+#exec waybar
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+# Your preferred terminal emulator
+set $term flatpak run org.wezfurlong.wezterm 
+# Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $menu dmenu_path | wmenu | xargs swaymsg exec --
+
+#Launch applications on startup
+#Audio Server: sudo apt-get install pipewire pipewire-audio-client-libraries pipewire-pulse
+#Audio Mixer/controller: sudo apt-get install pavucontrol
+#App Name: pavucontrol
+exec --no-startup-id pulseaudio --start
+exec_always pkill kanshi; exec kanshi
+
+include /etc/sway/config-vars.d/*
+
+### Output configuration
+include ~/.config/sway/config.d/output.conf
+
+### Input configuration
+include ~/.config/sway/config.d/input.conf
+
+### Key bindings
+include ~/.config/sway/config.d/keybindings.conf
+#sudo apt install grim slurp wl-clipboard
+bindsym  $mod+Shift+p exec grim -g "$(slurp)" - | wl-copy
+
+# Moving around and Resizing containers
+include ~/.config/sway/config.d/navigating.conf
+
+# Workspaces and scratchpad:
+include ~/.config/sway/config.d/workspaces.conf
+
+# Layout stuff:
+include ~/.config/sway/config.d/layout.conf
+gaps inner 2
+gaps outer 2
+default_border pixel 2 
+#disable window titlebar
+
+# Status Bar:
+include ~/.config/sway/config.d/statusBar.conf
+
+# Monitor
+#exec kanshi
+# use this if you want to ensure kanshi is reloaded every time Sway's config is reloaded
+#exec_always kanshi 
+include /etc/sway/config.d/*
