@@ -2,7 +2,7 @@
     "layer": "top",
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["battery", "clock"],
+    "modules-right": ["backlight", "battery", "clock"],
     "sway/window": {
         "max-length": 50
     },
@@ -12,5 +12,18 @@
     },
     "clock": {
         "format-alt": "{:%a, %d. %b  %H:%M}"
+    },
+    "backlight": {
+    	"format": "{percent}% {icon}",
+    	"format-icons": ["\uf185", "\uf111"],
+    	"on-scroll-up": "brightnessctl set +5%",
+	"on-scroll-down": "brightnessctl set 5%- && [ $(brightnessctl g) -ge $(brightnessctl m) / 3 ] || brightnessctl set 30%"
+    },
+    "custom/notification": {
+    	"format": "<span><span color='#your_color'>{}</span></span>",
+    	"exec": "swaync-client -c",
+    	"on-click": "swaync-client -t",
+    	"tooltip": true,
+    	"on-click-right": "swaync-client -C"
     }
 }
