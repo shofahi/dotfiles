@@ -20,7 +20,8 @@ set $menu dmenu_path | wmenu | xargs swaymsg exec --
 #Audio Mixer/controller: sudo apt-get install pavucontrol
 #App Name: pavucontrol
 exec --no-startup-id pulseaudio --start
-exec_always pkill kanshi; exec kanshi
+# exec_always pkill kanshi; exec kanshi
+# exec --no-startup-id /usr/libexec/xdg-desktop-portal-wlr
 
 include /etc/sway/config-vars.d/*
 
