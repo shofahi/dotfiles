@@ -1,17 +1,36 @@
 {
     "layer": "top",
-    "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["sway/window"],
-    "modules-right": ["backlight", "battery", "clock"],
+    "height": 50,
+    "modules-center": ["sway/workspaces", "sway/mode"],
+    "modules-left": ["clock"],
+    "modules-right": ["pulseaudio", "backlight","network", "battery"],
     "sway/window": {
         "max-length": 50
+    },
+    "pulseaudio": {
+    	"format": "{icon} {volume}%",
+    	"tooltip": true,
+    	"format-muted": " Muted",
+    	"format-icons": {
+        "default": ["", "", ""] // Muted, low, medium, high
+    },
+	"on-click": "sh -c 'pgrep -x pavucontrol && pkill -x pavucontrol || pavucontrol'",
+	"on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle", //use right-click for mute
+    	"scroll-step": 5           // Volume change on scroll
     },
     "battery": {
         "format": "{capacity}% {icon}",
         "format-icons": ["", "", "", "", ""]
     },
     "clock": {
-        "format-alt": "{:%a, %d. %b  %H:%M}"
+        "format": "{:%a, %d. %b  %H:%M}"
+    },
+    "network": {
+        "format-wifi": " {essid} ({signalStrength}%)",
+        "format-ethernet": " {ifname}",
+        "format-disconnected": "🚫 Disconnected",
+        "tooltip": true,
+        "on-click": "nm-connection-editor" // Optional: open a GUI editor
     },
     "backlight": {
     	"format": "{percent}% {icon}",

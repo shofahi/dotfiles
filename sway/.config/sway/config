@@ -1,4 +1,5 @@
 ### Variables
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
 #
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
@@ -36,14 +37,7 @@ include ~/.config/sway/config.d/keybindings.conf
 #sudo apt install grim slurp wl-clipboard
 bindsym  $mod+Shift+p exec grim -g "$(slurp)" - | wl-copy
 
-# Moving around and Resizing containers
-include ~/.config/sway/config.d/navigating.conf
-
-# Workspaces and scratchpad:
-include ~/.config/sway/config.d/workspaces.conf
-
 # Layout stuff:
-include ~/.config/sway/config.d/layout.conf
 gaps inner 2
 gaps outer 2
 default_border pixel 2 
@@ -51,9 +45,8 @@ default_border pixel 2
 
 # Status Bar:
 include ~/.config/sway/config.d/statusBar.conf
+# Format: 		<border>     <background> <text>     <indicator> <child_border>
+client.focused          #4c7899	     #285577	  #ffffff     #2e9ef4	   #285577
+client.unfocused        #333333	#222222	#888888 #292d2e	#222222
 
-# Monitor
-#exec kanshi
-# use this if you want to ensure kanshi is reloaded every time Sway's config is reloaded
-#exec_always kanshi 
 include /etc/sway/config.d/*
