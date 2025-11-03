@@ -36,6 +36,7 @@ include ~/.config/sway/config.d/input.conf
 include ~/.config/sway/config.d/keybindings.conf
 #sudo apt install grim slurp wl-clipboard
 bindsym  $mod+Shift+p exec grim -g "$(slurp)" - | wl-copy
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 # Layout stuff:
 gaps inner 2
