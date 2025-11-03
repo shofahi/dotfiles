@@ -11,7 +11,7 @@ profile {
     output DP-1 enable mode 3440x1440 position 0,0
 }
 
-profile {
+profile home{
     output eDP-1 disable
     output HDMI-A-1 enable mode 5120x1440 position 0,0
 }

@@ -3,7 +3,7 @@
     "height": 50,
     "modules-center": ["sway/workspaces", "sway/mode"],
     "modules-left": ["clock"],
-    "modules-right": ["pulseaudio", "backlight","network", "battery"],
+    "modules-right": ["pulseaudio", "backlight","network", "battery", "custom/power"],
     "sway/window": {
         "max-length": 50
     },
@@ -44,5 +44,17 @@
     	"on-click": "swaync-client -t",
     	"tooltip": true,
     	"on-click-right": "swaync-client -C"
-    }
+    },
+    "custom/power": {
+    	"format": " ⏻ ", 
+    	"tooltip": false,
+    	"menu": "on-click", 
+    	"menu-file": "/home/eshomas/dotfiles/waybar/.config/waybar/powerMenu.xml",
+    	"menu-actions": {
+        	"shutdown": "systemctl poweroff",
+        	"reboot": "systemctl reboot",
+        	"suspend": "systemctl suspend",
+        	"sleep": "systemctl suspend" // Often the same command as suspend
+    	}
+   }
 }
