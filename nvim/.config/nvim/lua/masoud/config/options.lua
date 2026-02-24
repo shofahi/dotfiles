@@ -8,6 +8,16 @@ opt.laststatus = 3
 opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
 
+-- Indentation
+opt.expandtab = true
+opt.shiftwidth = 4
+opt.tabstop = 4
+opt.softtabstop = 4
+opt.smartindent = false -- Disable this as it conflicts with cindent/treesitter
+opt.cindent = true       -- Better for C/C++
+opt.shiftround = true
+opt.breakindent = true
+
 opt.mouse = "a"
 opt.showmode = false -- Don't show the mode, since it's already in the status line
 opt.clipboard = "unnamedplus" -- Sync with system clipboard
@@ -16,7 +26,7 @@ opt.undofile = true -- Save undo history
 opt.undolevels = 10000
 opt.ignorecase = true -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 opt.smartcase = true
-opt.smartindent = true -- Insert indents automatically
+-- opt.smartindent = true -- Insert indents automatically
 opt.spelllang = { "en" }
 
 opt.signcolumn = "yes" -- Keep signcolumn on by default
@@ -43,7 +53,7 @@ opt.breakindent = true -- Enable break indent
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize" }
 opt.wildmode = "longest:full,full" -- Command-line completion mode
-opt.tabstop = 2 -- Number of spaces tabs count for
+opt.tabstop = 4 -- Number of spaces tabs count for
 opt.winminwidth = 5 -- Minimum window width
 
 -- Needed?

@@ -1,3 +1,8 @@
+-- [[ Basic Keymaps ]]
+
+-- Diagnostic keymaps
+-- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+
 local util = require("masoud.util")
 
 local function map(mode, lhs, rhs, opts)
