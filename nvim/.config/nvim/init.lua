@@ -26,6 +26,7 @@ rtp:prepend(lazypath)
 require("masoud.config.options")
 require("masoud.config.keymaps")
 require("masoud.config.autocmds")
+require("masoud.config.functions")
 
 -- [[ Configure and install plugins ]]
 --  To update plugins you can run
