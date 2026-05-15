@@ -1,15 +1,19 @@
 -- [[ Basic Keymaps ]]
 
--- Diagnostic keymaps
--- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-
-local util = require("masoud.util")
-
 local function map(mode, lhs, rhs, opts)
 	opts = opts or {}
 	opts.silent = opts.silent ~= false
 	vim.keymap.set(mode, lhs, rhs, opts)
 end
+
+-- Diagnostic keymaps
+map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
+map("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
+map("n", "<leader>sd", function() Snacks.picker.diagnostics() end, { desc = "Search Diagnostics" })
+map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+
+local util = require("masoud.util")
 
 map({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })

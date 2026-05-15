@@ -3,6 +3,7 @@
 # pavucontrol -- Sound Control
 # dunst - notification manager
 # blueman -- <blueman-manager>
+# flameshot -- snipping tool
 
 import os
 import subprocess
@@ -14,28 +15,21 @@ from libqtile.config import Click, Drag, Group, Key, Match, Output, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile.log_utils import logger
+from libqtile.config import KeyChord
 import shutil
 import logging
 
-#Lowering the gate to 20 instead of 30 (WARNING)
-logger.setLevel(logging.INFO)
-
-logger.warning("--- QTILE CONFIG LOADING ----")
 os.system('/usr/bin/notify-send "Qtile Debug" "Config file is executing!"')
 
 mod = "mod4"
 terminal = "flatpak run org.wezfurlong.wezterm"
 
-#Start up programs
 @hook.subscribe.startup_once
 def autostart():
-    logger.info("--- Autostart programs ---")
-
     programs = [("dunst","Notification Deamon"),]
 
     for program, description in programs:
         program_path = shutil.which(program)
-
         if program_path:
             subprocess.Popen([program_path])
         else:
@@ -50,12 +44,14 @@ keys = [
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
+
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
     Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
@@ -63,6 +59,7 @@ keys = [
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -87,67 +84,39 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run Rofi"),
+    Key([mod], "b", lazy.hide_show_bar(), desc="Toggle bar visibility"),
+    Key([mod, "shift"], "p", lazy.spawn("flameshot gui"), desc="Take a screenshot"),
     # Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
-# Add key bindings to switch VTs in Wayland.
-# We can't check qtile.core.name in default config as it is loaded before qtile is started
-# We therefore defer the check until the key binding is run by using .when(func=...)
-for vt in range(1, 8):
-    keys.append(
-        Key(
-            ["control", "mod1"],
-            f"f{vt}",
-            lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
-            desc=f"Switch to VT{vt}",
-        )
-    )
+keys.append(
+    KeyChord([mod], "y", [
+        Key([], "s", lazy.spawn("steam"),lazy.ungrab_chord()),
+        Key([], "f", lazy.spawn("firefox"),lazy.ungrab_chord()),
+    ], mode="launch", name="launch")
+)
 
 #Define the workspaces
 groups = [Group(i) for i in "123456789"]
 
-keys.extend([Key([mod],"9",lazy.add_group("9"),desc="Add to group")])
-
-def add_group(num):
-    print("Changing to group", num)
-
-    #Add to group
-
-
-
-
-
-# if keys.count(Key[mod],"1") :
-#     os.system('/usr/bin/notify-send "Qtile Debug" "Key exists!"')
-# else:
-#     os.system('/usr/bin/notify-send "Qtile Debug" "Key does not exists!"')
-
-for i in groups[:7]:
+for i in groups:
     keys.extend(
         [
-            # mod + group number = switch to group
             Key(
                 [mod],
                 i.name,
                 lazy.group[i.name].toscreen(),
                 desc=f"Switch to group {i.name}",
             ),
-            # mod + shift + group number = switch to & move focused window to group
-            Key(
-                [mod, "shift"],
-                i.name,
-                lazy.window.togroup(i.name, switch_group=True),
-                desc=f"Switch to & move focused window to group {i.name}",
-            ),
-            # Or, use below if you prefer not to switch to that group.
-            # # mod + shift + group number = move focused window to group
-            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            #     desc="move focused window to group {}".format(i.name)),
+            Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
+                 desc="move focused window to group {}".format(i.name)),
         ]
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
+    layout.Columns(
+        border_focus="00CED1",
+        border_focus_stack=["#00FFFF", "#00FFFF"], border_width=4),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -170,13 +139,20 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 logo = os.path.join(os.path.dirname(libqtile.resources.__file__), "logo.png")
-screens = [
-    Screen(
-        top=bar.Bar(
+
+# icon_path = os.path.expanduser("~/.config/qtile/icons")
+def create_bar():
+    return bar.Bar(
             [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.WindowName(),
+                # widget.CurrentLayoutIcon(scale=0.7,padding=5),
+                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Spacer(),
+                widget.GroupBox(
+                    hide_unused=True,
+                    disable_drag=True,
+                    toggle=False
+                    ),
+                widget.Spacer(),
                 widget.Volume(fmt='Vol:{}',padding=5,mouse_callbacks={'Button3': lambda: qtile.cmd_spawn('pavucontrol')}),
                 widget.Systray(),
                 widget.Chord(
@@ -187,19 +163,17 @@ screens = [
                 ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
             ],
             24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_width=[0, 0,0 , 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
+        )
+
+screens = [
+    Screen(
+        top= create_bar(),
         background="#000000",
-        wallpaper=logo,
         wallpaper_mode="center",
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
     ),
 ]
 

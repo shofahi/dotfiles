@@ -17,6 +17,22 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     opts = {
       servers = {
+        -- Obsidian-like features for Markdown
+        markdown_oxide = {
+          root_dir = function(fname)
+            -- This tells the LSP that your "Vault" is the folder containing .obsidian or .git
+            return require('lspconfig').util.root_pattern('.git', '.obsidian', 'moxide.toml')(fname)
+              or vim.fn.getcwd()
+          end,
+          -- Placeholder for custom settings if you want to tweak behavior later
+          settings = {
+            ["markdown-oxide"] = {
+              syntax = {
+                wikilinks = true,
+              },
+            },
+          },
+        },
         clangd = {
           cmd = {
             "clangd",
@@ -39,7 +55,7 @@ return {
             basedpyright = {
               disableOrganizeImports = true,
               analysis = {
-                ignore = { '*' },
+                typeCheckingMode = "basic",
               },
             },
           },
@@ -108,7 +124,6 @@ return {
 
   {
     'williamboman/mason.nvim',
-    cmd = "Mason",
     opts = {},
   },
 
