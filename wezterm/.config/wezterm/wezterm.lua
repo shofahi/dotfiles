@@ -89,6 +89,18 @@ config.keys = {
     { key = 'l', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Right' },
 }
 
+config.background = {
+  {
+    source = {
+      File = wezterm.home_dir .. '/dotfiles/assets/backgrounds/lineShaders.jpg',
+    },
+    hsb = {
+      brightness = 0.05,
+      saturation = 1.0,
+    },
+  },
+}
+
 -- Make tab bar less intrusive
 config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = false

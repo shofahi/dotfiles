@@ -7,15 +7,29 @@ return {
   --     vim.cmd.colorscheme 'onedark'
   --   end,
   -- },
- {
-    "Mofiqul/dracula.nvim",
-    lazy = false,
-    name = "dracula",
-    priority = 1000,
-    config = function()
-      require("dracula").setup({})
-      vim.cmd([[colorscheme dracula]])
-    end,
+ -- {
+ --    "Mofiqul/dracula.nvim",
+ --    lazy = false,
+ --    name = "dracula",
+ --    priority = 1000,
+ --    config = function()
+ --      require("dracula").setup({})
+ --      vim.cmd([[colorscheme dracula]])
+ --    end,
+ --  }
+ --
+{
+  "Mofiqul/dracula.nvim",
+  lazy = false,
+  name = "dracula",
+  priority = 1000,
+  config = function()
+    require("dracula").setup({})
+    vim.cmd([[colorscheme dracula]])
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+  end,
   }
 
   -- {
