@@ -1,0 +1,10 @@
+Share screen:
+    sudo apt update
+    sudo apt install pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+
+    systemctl --user restart pipewire wireplumber xdg-desktop-portal
+        if warning
+            systemctl --user daemon-reload
+            systemctl --user restart pipewire wireplumber xdg-desktop-portal
+
+------------------------------------

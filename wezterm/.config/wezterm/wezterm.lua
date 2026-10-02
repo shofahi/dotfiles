@@ -79,6 +79,12 @@ config.colors = {
     },
 }
 
+-- --- PANE FOCUS ---
+config.inactive_pane_hsb = {
+    saturation = 0.95,
+    brightness = 0.40,
+}
+
 config.keys = {
     { key = 'r', mods = 'LEADER', action = wezterm.action.ReloadConfiguration },
     { key = 'v', mods = 'LEADER', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
@@ -87,6 +93,12 @@ config.keys = {
     { key = 'j', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Down' },
     { key = 'k', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Up' },
     { key = 'l', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Right' },
+    {
+        key = 'm',
+        mods = 'LEADER',
+        action = wezterm.action.PaneSelect { mode = 'SwapWithActive' },
+    },
+    { key = 'z', mods = 'LEADER', action = wezterm.action.TogglePaneZoomState },
 }
 
 config.background = {
